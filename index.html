@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" crossorigin="anonymous"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div x-data="app">
+        <div x-text="text"></div>
+        <div x-text="number"></div>
+        <button x-on:click="increment()" type="button">Increment</button>
+        <button x-on:click="decrement()" type="button">Decrement</button>
+        <template x-for="(item, index) in items" :key="index">
+            <div x-text="item.name"></div>
+        </template>
+        <div x-text="items.length"></div>
+        <button x-on:click="add()" type="button">Adicionar</button>
+    </div>
+
+    <script>
+        document.addEventListener('alpine:init', function() {        
+            Alpine.data('app', function() {
+                return {
+                    text: 'Oi',
+                    number: 1,
+                    increment: function() {
+                        this.number++;
+                    },
+                    decrement: function() {
+                        this.number--;
+                    },
+                    add: function(){
+                        this.items.push({id: this.items.length + 1, 'name': 'name 1'})
+                    },
+                    items: [
+                        {id: 1, name:'Fúlvio'}
+                    ]
+                }
+            })}
+        );
+    </script>
+</body>
+</html>
