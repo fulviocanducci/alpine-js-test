@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/uuid@latest/dist/umd/uuidv4.min.js"></script>
+    <title>Todos Tarefa</title>
+</head>
+<body>
+    <div x-data="app">
+        <div>
+            <input type="text" name="zip" x-model="zip" @keyup.enter="find()"/> 
+            <button @click="find()">Buscar</button>
+        </div>
+        <div>
+            <div x-text="zipcode.cep"></div>
+            <div x-text="zipcode.logradouro"></div>
+            <div x-text="zipcode.complemento"></div>
+            <div x-text="zipcode.bairro"></div>
+            <div x-text="zipcode.localidade"></div>
+            <div x-text="zipcode.uf"></div>
+            <div x-text="zipcode.ibge"></div>
+            <div x-text="zipcode.gia"></div>
+            <div x-text="zipcode.ddd"></div>
+            <div x-text="zipcode.siafi"></div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('alpine:init', function() {        
+            Alpine.data('app', function() {
+                return {
+                    zip: '',
+                    zipcode: {
+                        "cep": "",
+                        "logradouro": "",
+                        "complemento": "",
+                        "bairro": "",
+                        "localidade": "",
+                        "uf": "",
+                        "ibge": "",
+                        "gia": "",
+                        "ddd": "",
+                        "siafi": ""
+                    },
+                    url: "https://viacep.com.br/ws/{data}/json/",
+                    getUrl: function() {
+                        return this.url.replace('{data}', this.zip);
+                    },
+                    find: function() {
+                        fetch(this.getUrl())
+                            .then(function(result){
+                                return result.json();
+                            })
+                            .then(function(data) {                                
+                                this.zipcode = data;
+                            }.bind(this));
+                    }
+                }
+            })}
+        );
+    </script>
+</body>
+</html>

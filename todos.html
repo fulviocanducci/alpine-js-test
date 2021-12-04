@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/uuid@latest/dist/umd/uuidv4.min.js"></script>
+    <title>Todos Tarefa</title>
+</head>
+<body>
+    <div x-data="app">
+        <div>
+            <input type="text" name="description" x-model="description" @keyup.enter="add()"/> <button @click="add()">Adicionar</button>
+        </div>
+        <div>
+            <ul>
+                <template x-for="todo in todos" :key="todo.id">
+                    <li x-text="concat(todo)"></li>
+                </template>
+            </ul>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('alpine:init', function() {        
+            Alpine.data('app', function() {
+                return {
+                    description: '',
+                    todos: [],
+                    concat: function(todo) {
+                        return todo.id + " - " + todo.description;
+                    },
+                    id: function() {
+                        return uuidv4();
+                    },
+                    add: function() {
+                        if (this.description && this.description.trim().length > 0) {
+                            this.todos.push({id: this.id(), description: this.description, done: false});
+                            this.description = '';
+                        }
+                    }
+                }
+            })}
+        );
+    </script>
+</body>
+</html>
