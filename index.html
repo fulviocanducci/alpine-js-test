@@ -14,9 +14,12 @@
         <button x-on:click="increment()" type="button">Increment</button>
         <button x-on:click="decrement()" type="button">Decrement</button>
         <template x-for="(item, index) in items" :key="index">
-            <div x-text="item.name"></div>
+            <div x-text="item.name" x-transition.delay.50ms></div>
         </template>
-        <div x-text="items.length"></div>
+        <input type="text" x-model="message">
+        <div x-text="message"></div>
+        <div x-text="items.length" x-show="status" x-transition></div>
+        <button x-on:click="statusShow()" type="button" x-text="status?'Fechar':'Abrir'" title="Show Status"></button>
         <button x-on:click="add()" type="button">Adicionar</button>
     </div>
 
@@ -24,6 +27,8 @@
         document.addEventListener('alpine:init', function() {        
             Alpine.data('app', function() {
                 return {
+                    status: false,
+                    message: '',
                     text: 'Oi',
                     number: 1,
                     increment: function() {
@@ -34,6 +39,9 @@
                     },
                     add: function(){
                         this.items.push({id: this.items.length + 1, 'name': 'name 1'})
+                    },
+                    statusShow: function() {
+                        this.status = !this.status;
                     },
                     items: [
                         {id: 1, name:'Fúlvio'}
